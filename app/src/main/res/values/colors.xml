@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 🔹 Base Backgrounds -->
+    <color name="background_dark">#0F172A</color>
+    <color name="background_dark_alt">#020617</color>
+
+    <!-- 🔹 Cards -->
+    <color name="card_dark">#1E293B</color>
+    <color name="card_dark_soft">#273449</color>
+
+    <!-- 🔹 Glass Effect -->
+    <color name="glass_light">#1AFFFFFF</color>      <!-- transparent white -->
+    <color name="glass_border">#33FFFFFF</color>     <!-- subtle border -->
+
+    <!-- 🔹 Accent Colors -->
+    <color name="accent_green">#22C55E</color>
+    <color name="accent_blue">#38BDF8</color>
+
+    <!-- 🔹 Text -->
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_muted">#64748B</color>
+
+    <!-- 🔹 Glow / Highlight -->
+    <color name="glow_green">#5522C55E</color>
+    <color name="glow_blue">#5538BDF8</color>
+
+</resources>

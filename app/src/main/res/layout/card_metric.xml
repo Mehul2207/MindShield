@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/metricCard"
+    android:orientation="vertical"
+    android:background="@drawable/bg_glass_ripple"
+    android:padding="16dp"
+    android:layout_margin="10dp"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="130dp"
+    android:elevation="6dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/metricTitle"
+        android:text="Metric"
+        android:textColor="#B3FFFFFF"
+        android:textSize="13sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/metricValue"
+        android:text="Value"
+        android:textColor="@color/text_white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
