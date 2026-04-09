@@ -12,7 +12,20 @@
           "package_name": "com.example.mindshield"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "123142239467-cb6enjr1botdf8c1lr44g27bm99l00uo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mindshield",
+            "certificate_hash": "41a105e3be2d1b35c75f8d63e8cb1abffbcc6697"
+          }
+        },
+        {
+          "client_id": "123142239467-3k51mjat9avd8qbh3kthqb9tfc43b0g9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC5qt3rknb1xSnj1XPJFrWhzb91Aj1Pku4"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123142239467-3k51mjat9avd8qbh3kthqb9tfc43b0g9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -17,6 +17,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private List<Message> messages;
     private String currentUserId;
 
+    public interface OnMessageLongClickListener {
+        void onMessageLongClick(Message message, int position);
+    }
+
+    private OnMessageLongClickListener longClickListener;
+
+    public void setOnMessageLongClickListener(OnMessageLongClickListener listener) {
+        this.longClickListener = listener;
+    }
+
     public ChatAdapter(List<Message> messages, String currentUserId) {
         this.messages = messages;
         this.currentUserId = currentUserId;
@@ -63,11 +73,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Message msg = messages.get(position);
 
-        if (msg.message != null) {
-            holder.messageText.setText(msg.message);
+        // ✅ FIXED: use msg.text instead of msg.message
+        if (msg.text != null && !msg.text.isEmpty()) {
+            holder.messageText.setText(msg.text);
         } else {
             holder.messageText.setText("");
         }
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onMessageLongClick(msg, position);
+            }
+            return true;
+        });
+    }
+
+    public void removeMessage(int position) {
+        messages.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override

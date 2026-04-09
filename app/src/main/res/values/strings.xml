@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MindShield</string>
+    <string name="default_web_client_id">"123142239467-cb6enjr1botdf8c1lr44g27bm99l00uo.apps.googleusercontent.com"</string>
 </resources>

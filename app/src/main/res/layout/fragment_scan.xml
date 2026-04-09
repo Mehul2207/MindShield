@@ -35,7 +35,7 @@
         android:padding="12dp"/>
 
     <TextView
-        android:text="Nearby Devices"
+        android:text="Paired Devices"
         android:textColor="@color/text_secondary"
         android:textSize="16sp"
         android:layout_marginTop="20dp"

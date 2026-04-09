@@ -3,9 +3,11 @@ package com.example.mindshield;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +16,29 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.mindshield.analytics.ProductivityCalculator;
+import com.example.mindshield.analytics.UsageEventHelper;
+import com.example.mindshield.analytics.UsageStatsHelper;
+import com.example.mindshield.health.GoogleFitManager;
+import com.example.mindshield.health.StepSensorManager;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.*;
 
 import java.util.*;
 
-import com.example.mindshield.analytics.UsageStatsHelper;
-import com.example.mindshield.analytics.ProductivityCalculator;
-
 public class DashboardFragment extends Fragment {
 
-    private TextView scoreValue, scoreStatus, greetingText;
-    private TextView aiInsight;
+    private TextView scoreValue, scoreStatus, greetingText, aiInsight;
     private PieChart pieChart;
     private LinearLayout topAppsContainer;
+
+    private TextView stepsText;
+    private TextView heartText;
+
+    private boolean isUsingFit = false;
+    private StepSensorManager sensorManager;
+
+    private GoogleFitManager googleFitManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +46,9 @@ public class DashboardFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        Log.d("DEBUG", "DashboardFragment Loaded");
+
+        // UI binding
         scoreValue = view.findViewById(R.id.scoreValue);
         scoreStatus = view.findViewById(R.id.scoreStatus);
         greetingText = view.findViewById(R.id.greetingText);
@@ -42,13 +56,28 @@ public class DashboardFragment extends Fragment {
         pieChart = view.findViewById(R.id.pieChart);
         topAppsContainer = view.findViewById(R.id.topAppsContainer);
 
+        stepsText = view.findViewById(R.id.stepsValue);
+        heartText = view.findViewById(R.id.heartValue);
+
+        googleFitManager = new GoogleFitManager();
+
+        TextView connectFit = view.findViewById(R.id.connectFitButton);
+
+        connectFit.setOnClickListener(v -> {
+            Log.d("DEBUG", "Manual Fit connect clicked");
+            googleFitManager.requestPermissions(getActivity());
+        });
+
         setGreeting();
-        loadData();
+        setupChartUI();
+
+        loadData(); // usage stats
+        handleGoogleFit(); // health data
 
         return view;
     }
 
-
+    // ---------------- GREETING ----------------
     private void setGreeting() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
@@ -56,94 +85,132 @@ public class DashboardFragment extends Fragment {
                 (hour < 18) ? "Good Afternoon" :
                         "Good Evening";
 
-        greetingText.setText(message + ", Mehul");
+        greetingText.setText(message + ", Mehul 👋");
     }
 
+    // ---------------- GOOGLE FIT ----------------
+    private void handleGoogleFit() {
+
+        if (googleFitManager.hasPermissions(getActivity())) {
+
+            Log.d("DEBUG", "Fit permission OK");
+            loadHealthData();
+
+        } else {
+
+            Log.d("DEBUG", "Fit permission NOT granted");
+            googleFitManager.requestPermissions(getActivity());
+
+            stepsText.setText("Connect Fit");
+            heartText.setText("--");
+        }
+    }
+
+    private void loadHealthData() {
+
+        googleFitManager.readSteps(getActivity(), steps -> {
+
+            Log.d("DEBUG", "Fit steps: " + steps);
+
+            getActivity().runOnUiThread(() -> {
+
+                if (steps > 0) {
+                    // ✅ Use ONLY Google Fit
+                    isUsingFit = true;
+
+                    if (sensorManager != null) {
+                        sensorManager.stop(); // stop sensor if running
+                    }
+
+                    stepsText.setText(String.valueOf(steps));
+
+                } else {
+                    Log.d("DEBUG", "Fit failed → using sensor");
+
+                    isUsingFit = false;
+
+                    sensorManager = new StepSensorManager(getContext(), sensorSteps -> {
+
+                        if (isUsingFit) return; // 🚫 prevent override
+
+                        getActivity().runOnUiThread(() -> {
+                            stepsText.setText(String.valueOf(sensorSteps));
+                        });
+
+                    });
+
+                    sensorManager.start();
+                }
+
+            });
+        });
+
+        googleFitManager.readHeartRate(getActivity(), hr -> {
+
+            Log.d("DEBUG", "Heart rate: " + hr);
+
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (hr > 0) {
+                        heartText.setText(hr + " bpm");
+                    } else {
+                        heartText.setText("No HR data");
+                    }
+                });
+            }
+        });
+    }
+
+    // ---------------- USAGE STATS ----------------
     private void loadData() {
+
+        Log.d("DEBUG", "loadData running");
+
+        if (!hasUsageStatsPermission()) {
+            Log.d("DEBUG", "Usage permission NOT granted");
+            requestPermission();
+            return;
+        }
 
         new Thread(() -> {
 
             Map<String, Long> usageMap =
-                    UsageStatsHelper.getAppUsage(getContext());
+                    UsageEventHelper.getAccurateUsage(getContext());
+
+            List<Map.Entry<String, Long>> sorted =
+                    new ArrayList<>(usageMap.entrySet());
+
+            sorted.sort((a, b) ->
+                    Long.compare(b.getValue(), a.getValue()));
+
+            LinkedHashMap<String, Long> sortedMap = new LinkedHashMap<>();
+
+            for (Map.Entry<String, Long> entry : sorted) {
+                sortedMap.put(entry.getKey(), entry.getValue());
+            }
 
             double score =
-                    ProductivityCalculator.calculateScore(usageMap);
+                    ProductivityCalculator.calculateScore(sortedMap);
 
             getActivity().runOnUiThread(() -> {
 
                 scoreValue.setText(String.valueOf((int) score));
 
-                scoreStatus.setText(score > 75 ? "Excellent" :
-                        score > 50 ? "Good" :
-                                "Needs Improvement");
+                scoreStatus.setText(score > 75 ? "Excellent 🚀" :
+                        score > 50 ? "Good 👍" :
+                                "Needs Improvement ⚠️");
 
-                setupChart(usageMap);
-                populateTopApps(usageMap);
+                aiInsight.setText(generateInsight(score));
 
+                setupChart(sortedMap);
+                populateTopApps(sortedMap);
             });
 
         }).start();
     }
 
-    private void setupChart(Map<String, Long> usageMap) {
-
-        List<PieEntry> entries = new ArrayList<>();
-
-        int count = 0;
-
-        for (Map.Entry<String, Long> entry : usageMap.entrySet()) {
-
-            if (count >= 5) break;
-
-            float minutes = entry.getValue() / (1000f * 60f);
-
-            entries.add(new PieEntry(minutes, entry.getKey()));
-            count++;
-        }
-
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setColors(
-                android.graphics.Color.GREEN,
-                android.graphics.Color.BLUE,
-                android.graphics.Color.CYAN,
-                android.graphics.Color.MAGENTA,
-                android.graphics.Color.YELLOW
-        );
-
-        PieData data = new PieData(dataSet);
-        data.setValueTextColor(android.graphics.Color.WHITE);
-
-        pieChart.setData(data);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.invalidate();
-    }
-
-    private void populateTopApps(Map<String, Long> usageMap) {
-
-        topAppsContainer.removeAllViews();
-
-        int count = 0;
-
-        for (Map.Entry<String, Long> entry : usageMap.entrySet()) {
-
-            if (count >= 5) break;
-
-            TextView tv = new TextView(getContext());
-            tv.setTextColor(getResources().getColor(android.R.color.white));
-
-            float minutes = entry.getValue() / (1000f * 60f);
-
-            tv.setText(entry.getKey() + " - " + (int) minutes + " mins");
-
-            tv.setPadding(0, 8, 0, 8);
-
-            topAppsContainer.addView(tv);
-
-            count++;
-        }
-    }
-
     private boolean hasUsageStatsPermission() {
+
         AppOpsManager appOps =
                 (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
 
@@ -166,8 +233,116 @@ public class DashboardFragment extends Fragment {
         return mode == AppOpsManager.MODE_ALLOWED;
     }
 
-
     private void requestPermission() {
         startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+    }
+
+    // ---------------- AI INSIGHT ----------------
+    private String generateInsight(double score) {
+        if (score > 75) {
+            return "You're in control today. Keep maintaining this balance.";
+        } else if (score > 50) {
+            return "Decent progress. Try reducing screen time slightly.";
+        } else {
+            return "High distraction detected. Consider a digital detox.";
+        }
+    }
+
+    // ---------------- CHART ----------------
+    private void setupChartUI() {
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.TRANSPARENT);
+        pieChart.setTransparentCircleRadius(58f);
+        pieChart.setHoleRadius(55f);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.getDescription().setEnabled(false);
+    }
+
+    private void setupChart(Map<String, Long> usageMap) {
+
+        List<PieEntry> entries = new ArrayList<>();
+
+        int count = 0;
+
+        for (Map.Entry<String, Long> entry : usageMap.entrySet()) {
+
+            if (count >= 5) break;
+
+            float minutes = entry.getValue() / (1000f * 60f);
+
+            entries.add(new PieEntry(minutes, entry.getKey()));
+            count++;
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+
+        dataSet.setColors(
+                Color.parseColor("#00E676"),
+                Color.parseColor("#2979FF"),
+                Color.parseColor("#00E5FF"),
+                Color.parseColor("#FF4081"),
+                Color.parseColor("#FFD600")
+        );
+
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(8f);
+
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(false);
+
+        pieChart.setData(data);
+        pieChart.animateY(900);
+        pieChart.invalidate();
+    }
+
+    // ---------------- TOP APPS ----------------
+    private void populateTopApps(Map<String, Long> usageMap) {
+
+        topAppsContainer.removeAllViews();
+
+        int count = 0;
+
+        for (Map.Entry<String, Long> entry : usageMap.entrySet()) {
+
+            if (count >= 5) break;
+
+            float minutes = entry.getValue() / (1000f * 60f);
+
+            TextView tv = new TextView(getContext());
+
+            String appName = entry.getKey();
+
+            try {
+                appName = getContext()
+                        .getPackageManager()
+                        .getApplicationLabel(
+                                getContext().getPackageManager()
+                                        .getApplicationInfo(entry.getKey(), 0)
+                        ).toString();
+            } catch (Exception e) {
+                // fallback to package name
+            }
+
+            tv.setText(appName + " • " + (int) minutes + " mins");
+            tv.setTextColor(Color.WHITE);
+            tv.setTextSize(15f);
+
+            tv.setPadding(20, 20, 20, 20);
+            tv.setBackgroundResource(R.drawable.bg_glass_card);
+
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+
+            params.setMargins(0, 8, 0, 8);
+            tv.setLayoutParams(params);
+
+            topAppsContainer.addView(tv);
+
+            count++;
+        }
     }
 }

@@ -132,12 +132,13 @@
                     android:textSize="14sp"/>
 
                 <TextView
+                    android:id="@+id/heartValue"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
                     android:background="@drawable/bg_glass_card"
                     android:padding="12dp"
-                    android:text="Heart\n78 bpm"
+                    android:text="Heart\n-- bpm"
                     android:textColor="@color/text_white"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -146,21 +147,32 @@
         <!-- AI INSIGHT -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="164dp"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="16dp"
-            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/bg_glass_ripple"
+            android:orientation="vertical"
             android:padding="16dp">
+
+            <TextView
+                android:id="@+id/stepsValue"
+                android:layout_width="333dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_glass_card"
+                android:padding="12dp"
+                android:text="Steps\n--"
+                android:textColor="@color/text_white"
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🧠 AI Insight"
+                android:textColor="@color/text_white"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_white"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aiInsight"
@@ -168,9 +180,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="Analyzing your behavior..."
-                android:textSize="14sp"
-                android:textColor="#B3FFFFFF"/>
+                android:textColor="#B3FFFFFF"
+                android:textSize="14sp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/connectFitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect Google Fit"
+            android:textColor="#00E5FF"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/usageValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textSize="18sp"/>
 
         <!-- CHART -->
         <LinearLayout
@@ -190,13 +217,30 @@
 
         <!-- TOP APPS -->
         <LinearLayout
-            android:id="@+id/topAppsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="16dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            android:background="@drawable/bg_glass_ripple"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top Apps Used"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_white"/>
+
+            <LinearLayout
+                android:id="@+id/topAppsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"/>
+        </LinearLayout>
 
     </LinearLayout>
 
