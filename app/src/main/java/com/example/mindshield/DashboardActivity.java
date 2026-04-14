@@ -56,6 +56,9 @@ public class DashboardActivity extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 fragment = new DashboardFragment();
 
+            } else if (id == R.id.nav_forum) {
+                fragment = new ForumFragment();
+
             } else if (id == R.id.nav_scan) {
                 fragment = new ScanFragment();
 

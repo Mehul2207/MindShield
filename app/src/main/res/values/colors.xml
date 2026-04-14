@@ -13,17 +13,28 @@
     <color name="glass_light">#1AFFFFFF</color>      <!-- transparent white -->
     <color name="glass_border">#33FFFFFF</color>     <!-- subtle border -->
 
-    <!-- 🔹 Accent Colors -->
-    <color name="accent_green">#22C55E</color>
-    <color name="accent_blue">#38BDF8</color>
+    <!-- 🔥 New Neon Accent System -->
+    <color name="accent_orange">#FF6A00</color>
+    <color name="accent_reddish">#FF3B3B</color>
+    <color name="accent_cyan">#00E5FF</color>
+    <color name="accent_blue">#2979FF</color>
+    <color name="accent_magenta">#FF4081</color>
+    <color name="accent_green">#00E676</color>
+
+    <color name="accent_gradient_start">#FF6A00</color>
+    <color name="accent_gradient_end">#FF3B3B</color>
+
+    <!-- Glow Variants -->
+    <color name="glow_orange">#55FF6A00</color>
+    <color name="glow_red">#55FF3B3B</color>
+    <color name="glow_cyan">#5500E5FF</color>
+    <color name="glow_blue">#552979FF</color>
+    <color name="glow_magenta">#55FF4081</color>
+    <color name="glow_green">#5500E676</color>
 
     <!-- 🔹 Text -->
     <color name="text_white">#FFFFFF</color>
     <color name="text_secondary">#94A3B8</color>
     <color name="text_muted">#64748B</color>
-
-    <!-- 🔹 Glow / Highlight -->
-    <color name="glow_green">#5522C55E</color>
-    <color name="glow_blue">#5538BDF8</color>
 
 </resources>

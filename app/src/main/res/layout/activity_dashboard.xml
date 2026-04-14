@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:elevation="10dp"
             app:menu="@menu/bottom_nav_menu"
-            app:itemIconTint="@color/accent_green"
+            app:itemIconTint="@color/accent_orange"
             app:itemTextColor="@color/text_white"
             app:labelVisibilityMode="labeled"/>
 

@@ -21,7 +21,7 @@
     <TextView
         android:id="@+id/scoreValue"
         android:text="82"
-        android:textColor="@color/accent_green"
+        android:textColor="@color/accent_orange"
         android:textSize="52sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"

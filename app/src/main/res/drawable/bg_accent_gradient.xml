@@ -2,11 +2,6 @@
     <gradient
         android:startColor="@color/accent_gradient_start"
         android:endColor="@color/accent_gradient_end"
-        android:angle="0"/>
-
-    <corners
-        android:topLeftRadius="18dp"
-        android:topRightRadius="18dp"
-        android:bottomLeftRadius="18dp"
-        android:bottomRightRadius="6dp"/>
+        android:angle="45"/>
+    <corners android:radius="20dp"/>
 </shape>

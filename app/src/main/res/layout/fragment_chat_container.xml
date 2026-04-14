@@ -19,14 +19,18 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Friends"/>
+            android:text="Friends"
+            android:background="@drawable/bg_accent_gradient"
+            android:textColor="@color/text_white"/>
 
         <Button
             android:id="@+id/requestsBtn"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Requests"/>
+            android:text="Requests"
+            android:background="@drawable/bg_accent_gradient"
+            android:textColor="@color/text_white"/>
     </LinearLayout>
 
     <FrameLayout
@@ -45,6 +49,8 @@
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/bg_accent_gradient"
+        android:textColor="@color/text_white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="10dp"
-    android:paddingVertical="4dp"
+    android:paddingVertical="6dp"
     android:gravity="start">
 
     <TextView
@@ -13,5 +13,5 @@
         android:textColor="@color/text_white"
         android:textSize="15sp"
         android:padding="12dp"
-        android:maxWidth="250dp"/>
+        android:maxWidth="260dp"/>
 </LinearLayout>

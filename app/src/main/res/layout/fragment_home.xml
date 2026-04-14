@@ -3,242 +3,335 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_dark"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="24dp">
+        android:padding="20dp">
 
         <!-- HEADER -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
-
-            <!-- App Title -->
-            <TextView
-                android:id="@+id/appTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MindShield"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_white"
-                android:fontFamily="sans-serif-medium"/>
-
-            <!-- Greeting -->
-            <TextView
-                android:id="@+id/greetingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/appTitle"
-                android:layout_marginTop="4dp"
-                android:text="Good Evening"
-                android:textSize="14sp"
-                android:textColor="#B3FFFFFF"/>
-
-            <!-- Avatar -->
-            <ImageView
-                android:id="@+id/profileAvatar"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_glass_card"
-                android:padding="8dp"
-                android:src="@drawable/ic_profile_placeholder"/>
-        </RelativeLayout>
-
-        <!-- HERO SCORE CARD -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:background="@drawable/bg_glass_ripple"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your Wellness Score"
-                android:textSize="14sp"
-                android:textColor="#B3FFFFFF"/>
-
-            <TextView
-                android:id="@+id/scoreValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="82"
-                android:textSize="50sp"
-                android:textStyle="bold"
-                android:textColor="@color/accent_green"/>
-
-            <TextView
-                android:id="@+id/scoreStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Excellent"
-                android:textSize="18sp"
-                android:textColor="@color/text_white"/>
-
-            <TextView
-                android:id="@+id/scoreSubText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="You're doing better than yesterday 🚀"
-                android:textSize="13sp"
-                android:textColor="#B3FFFFFF"/>
-        </LinearLayout>
-
-        <!-- QUICK METRICS -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="16dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:id="@+id/appTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/bg_glass_card"
-                    android:padding="12dp"
-                    android:text="Sleep\n7.2h"
-                    android:textColor="@color/text_white"
-                    android:textSize="14sp"/>
+                    android:text="MindShield"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_cyan"
+                    android:fontFamily="sans-serif-black"/>
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:id="@+id/greetingText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/bg_glass_card"
-                    android:padding="12dp"
-                    android:text="Screen\n5h"
-                    android:textColor="@color/text_white"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/heartValue"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/bg_glass_card"
-                    android:padding="12dp"
-                    android:text="Heart\n-- bpm"
-                    android:textColor="@color/text_white"
-                    android:textSize="14sp"/>
+                    android:text="Good Evening"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_secondary"/>
             </LinearLayout>
-        </HorizontalScrollView>
 
-        <!-- AI INSIGHT -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="164dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bg_glass_ripple"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/stepsValue"
-                android:layout_width="333dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
+            <ImageView
+                android:id="@+id/profileAvatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/bg_glass_card"
-                android:padding="12dp"
-                android:text="Steps\n--"
-                android:textColor="@color/text_white"
-                android:textSize="14sp" />
+                android:padding="10dp"
+                android:src="@drawable/ic_profile_placeholder"/>
+        </RelativeLayout>
+
+        <!-- HERO SCORE CARD (Neon Orange) -->
+        <LinearLayout
+            android:id="@+id/scoreCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_input_neon"
+            android:padding="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🧠 AI Insight"
-                android:textColor="@color/text_white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="WELLNESS SCORE"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold"
+                android:textColor="@color/text_secondary"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/scoreValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="82"
+                    android:textSize="64sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_orange"
+                    android:includeFontPadding="false"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:id="@+id/scoreStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Excellent"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_white"/>
+
+                    <TextView
+                        android:id="@+id/scoreSubText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Better than yesterday 🚀"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- METRICS GRID -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:columnOrderPreserved="false">
+
+            <!-- Steps -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_glass_card"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Steps"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"/>
+                <TextView
+                    android:id="@+id/stepsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_cyan"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Heart Rate -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_glass_card"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heart Rate"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"/>
+                <TextView
+                    android:id="@+id/heartValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- bpm"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_reddish"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Sleep -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_glass_card"
+                android:padding="16dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentStart="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sleep"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"/>
+                    <TextView
+                        android:id="@+id/sleepValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/accent_blue"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/addSleepButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="Add Sleep Data"/>
+            </RelativeLayout>
+
+            <!-- Screen Time -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_glass_card"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Screen Time"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"/>
+                <TextView
+                    android:id="@+id/usageValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_magenta"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </GridLayout>
+
+        <!-- AI INSIGHT (Neon Green border) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_neon_card_green"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🧠 AI INSIGHT"
+                android:textColor="@color/accent_green"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"/>
 
             <TextView
                 android:id="@+id/aiInsight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Analyzing your behavior..."
-                android:textColor="#B3FFFFFF"
-                android:textSize="14sp" />
+                android:layout_marginTop="8dp"
+                android:text="Analyzing your behavior patterns for personalized suggestions..."
+                android:textColor="@color/text_white"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"/>
         </LinearLayout>
 
         <TextView
             android:id="@+id/connectFitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Connect Google Fit"
-            android:textColor="#00E5FF"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/usageValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="--"
-            android:textSize="18sp"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Sync Google Fit Data"
+            android:textColor="@color/accent_cyan"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"/>
 
         <!-- CHART -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_glass_ripple"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_glass_card"
             android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USAGE DISTRIBUTION"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"/>
+                android:layout_height="220dp"
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
 
         <!-- TOP APPS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
-            android:background="@drawable/bg_glass_ripple"
+            android:background="@drawable/bg_glass_card"
             android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Top Apps Used"
-                android:textSize="16sp"
+                android:text="TOP APPS"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
                 android:textStyle="bold"
-                android:textColor="@color/text_white"/>
+                android:letterSpacing="0.1"/>
 
             <LinearLayout
                 android:id="@+id/topAppsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical"/>
         </LinearLayout>
 

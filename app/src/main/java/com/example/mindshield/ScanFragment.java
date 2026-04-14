@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ScanFragment extends Fragment {
 
-    private Button scanBtn;
+    private LinearLayout scanBtn;
 
     public ScanFragment() {}
 

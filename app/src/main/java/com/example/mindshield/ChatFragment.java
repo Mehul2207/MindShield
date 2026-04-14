@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.example.mindshield.ai.OpenRouterService;
 import com.example.mindshield.ai.ContextBuilder;
@@ -27,7 +28,7 @@ public class ChatFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private EditText inputMessage;
-    private Button sendButton;
+    private ImageButton sendButton;
 
     private ArrayList<Message> messageList;
     private ChatAdapter adapter;

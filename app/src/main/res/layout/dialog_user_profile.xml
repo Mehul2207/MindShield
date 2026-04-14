@@ -4,26 +4,56 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/background_dark">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/dialogProfileImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"
-        android:scaleType="centerCrop"/>
+        android:src="@drawable/ic_profile_placeholder"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_neon_card_cyan"
+        android:padding="4dp"
+        app:shapeAppearanceOverlay="@style/CircleImage"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
 
     <TextView
         android:id="@+id/dialogName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:paddingTop="12dp"/>
+        android:text="User Name"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/accent_cyan"
+        android:paddingTop="16dp"/>
 
     <TextView
         android:id="@+id/dialogEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp"/>
+        android:text="user@example.com"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:paddingTop="4dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/glass_border"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/btnCloseDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:textColor="@color/text_white"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="@drawable/bg_glass_ripple"
+        android:textAllCaps="true"
+        android:letterSpacing="0.1"/>
 
 </LinearLayout>

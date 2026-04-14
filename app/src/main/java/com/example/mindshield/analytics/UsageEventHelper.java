@@ -18,6 +18,7 @@ public class UsageEventHelper {
         UsageStatsManager usageStatsManager =
                 (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
 
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -28,6 +29,16 @@ public class UsageEventHelper {
         long endTime = System.currentTimeMillis();
 
         HashMap<String, Long> usageMap = new HashMap<>();
+
+        if (context == null) {
+            Log.e(TAG, "Context is null ❌");
+            return usageMap;
+        }
+
+        if (usageStatsManager == null) {
+            Log.e(TAG, "UsageStatsManager is null ❌");
+            return usageMap;
+        }
 
         List<UsageStats> stats =
                 usageStatsManager.queryUsageStats(
@@ -43,6 +54,10 @@ public class UsageEventHelper {
             String pkg = stat.getPackageName();
 
             if (isSystemPackage(pkg)) continue;
+
+            long lastTimeUsed = stat.getLastTimeUsed();
+
+            if (lastTimeUsed < startTime) continue; // ❗ ignore yesterday apps
 
             long foregroundTime = stat.getTotalTimeInForeground();
 

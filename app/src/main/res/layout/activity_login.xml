@@ -1,24 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="#121212">
+    android:background="@color/background_dark"
+    android:padding="32dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MindShield"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="@color/accent_cyan"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.05"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your AI-Powered Mental Guardian"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.1"/>
+
+        <View
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:background="@color/accent_orange"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/googleSignInBtn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:padding="4dp"
+            android:background="@drawable/bg_glass_ripple"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Securely sign in with your Google account"
+            android:textSize="12sp"
+            android:textColor="@color/text_muted"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
 
     <TextView
-        android:text="Welcome"
-        android:textSize="28sp"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="40dp"
-        android:textStyle="bold"
-        android:layout_height="1dp"
-        android:layout_width="1dp"/>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleSignInBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="V 1.0.4"
+        android:textSize="12sp"
+        android:textColor="@color/text_muted"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

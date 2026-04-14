@@ -9,8 +9,20 @@
         <!-- Status bar color -->
         <item name="android:statusBarColor">@color/background_dark</item>
 
+        <item name="colorPrimary">@color/accent_cyan</item>
+        <item name="colorSecondary">@color/accent_orange</item>
+
     </style>
 
     <style name="Theme.MindShield" parent="Base.Theme.MindShield" />
+
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Custom Dialog Theme -->
+    <style name="CustomDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <!-- Add any custom attributes here if needed -->
+    </style>
 
 </resources>

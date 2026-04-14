@@ -1,45 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
 
     <TextView
-        android:text="Device Scanner"
-        android:textColor="@color/text_white"
-        android:textSize="26sp"
+        android:text="Connectivity"
+        android:textColor="@color/accent_cyan"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <!-- Glass Buttons -->
-    <Button
-        android:id="@+id/btn_scan_bluetooth"
-        android:text="Scan Bluetooth Devices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_glass_card"
-        android:textColor="@color/text_white"
-        android:padding="12dp"/>
+    <TextView
+        android:text="Scan and manage nearby devices"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:layout_marginBottom="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btn_scan_qr"
-        android:text="Scan QR Code"
-        android:layout_marginTop="12dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_glass_card"
-        android:textColor="@color/text_white"
-        android:padding="12dp"/>
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <LinearLayout
+            android:id="@+id/btn_scan_bluetooth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_glass_ripple"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_bluetooth"
+                app:tint="@color/accent_blue"
+                xmlns:app="http://schemas.android.com/apk/res-auto"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bluetooth"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/text_white"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_scan_qr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_glass_ripple"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_qr_code"
+                app:tint="@color/accent_magenta"
+                xmlns:app="http://schemas.android.com/apk/res-auto"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QR Scan"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/text_white"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
-        android:text="Paired Devices"
+        android:text="ACTIVE DEVICES"
         android:textColor="@color/text_secondary"
-        android:textSize="16sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.1"
+        android:layout_marginBottom="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -49,24 +101,42 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp">
+        android:padding="8dp">
 
         <ListView
             android:id="@+id/device_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@android:color/transparent"
+            android:divider="@color/glass_border"
+            android:dividerHeight="1dp"
             android:background="@android:color/transparent"/>
     </LinearLayout>
 
-    <Button
+    <LinearLayout
         android:id="@+id/btn_nfc_share"
-        android:text="Share Profile via NFC"
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_glass_card"
-        android:textColor="@color/text_white"
-        android:padding="12dp"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_neon_card_cyan"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_nfc"
+            app:tint="@color/accent_cyan"
+            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHARE PROFILE VIA NFC"
+            android:textColor="@color/text_white"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
 
 </LinearLayout>

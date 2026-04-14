@@ -1,6 +1,7 @@
 package com.example.mindshield;
 
 import android.app.AppOpsManager;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,18 +12,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.mindshield.analytics.ProductivityCalculator;
 import com.example.mindshield.analytics.UsageEventHelper;
-import com.example.mindshield.analytics.UsageStatsHelper;
 import com.example.mindshield.health.GoogleFitManager;
 import com.example.mindshield.health.StepSensorManager;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.*;
 
@@ -34,6 +38,9 @@ public class DashboardFragment extends Fragment {
 
     private TextView stepsText;
     private TextView heartText;
+    private TextView usageText;
+    private TextView sleepText;
+    private ImageButton addSleepButton;
 
     private boolean isUsingFit = false;
     private StepSensorManager sensorManager;
@@ -58,6 +65,9 @@ public class DashboardFragment extends Fragment {
 
         stepsText = view.findViewById(R.id.stepsValue);
         heartText = view.findViewById(R.id.heartValue);
+        usageText = view.findViewById(R.id.usageValue);
+        sleepText = view.findViewById(R.id.sleepValue);
+        addSleepButton = view.findViewById(R.id.addSleepButton);
 
         googleFitManager = new GoogleFitManager();
 
@@ -68,6 +78,10 @@ public class DashboardFragment extends Fragment {
             googleFitManager.requestPermissions(getActivity());
         });
 
+        if (addSleepButton != null) {
+            addSleepButton.setOnClickListener(v -> showSleepStartPicker());
+        }
+
         setGreeting();
         setupChartUI();
 
@@ -75,6 +89,44 @@ public class DashboardFragment extends Fragment {
         handleGoogleFit(); // health data
 
         return view;
+    }
+
+    private void showSleepStartPicker() {
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog dialog = new TimePickerDialog(getContext(), (view, hourOfDay, minute) -> {
+            Calendar sleepStart = Calendar.getInstance();
+            sleepStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            sleepStart.set(Calendar.MINUTE, minute);
+            showSleepEndPicker(sleepStart);
+        }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
+        dialog.setTitle("When did you go to sleep?");
+        dialog.show();
+    }
+
+    private void showSleepEndPicker(Calendar sleepStart) {
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog dialog = new TimePickerDialog(getContext(), (view, hourOfDay, minute) -> {
+            Calendar sleepEnd = Calendar.getInstance();
+            sleepEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            sleepEnd.set(Calendar.MINUTE, minute);
+
+            if (sleepEnd.before(sleepStart)) {
+                sleepEnd.add(Calendar.DATE, 1);
+            }
+
+            long diff = sleepEnd.getTimeInMillis() - sleepStart.getTimeInMillis();
+            float hours = diff / (1000f * 60 * 60);
+
+            if (isAdded()) {
+                getActivity().runOnUiThread(() -> {
+                    sleepText.setText(String.format(Locale.getDefault(), "%.1fh", hours));
+                    Toast.makeText(getContext(), "Sleep recorded: " + String.format(Locale.getDefault(), "%.1f", hours) + " hours", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+        }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
+        dialog.setTitle("When did you wake up?");
+        dialog.show();
     }
 
     // ---------------- GREETING ----------------
@@ -85,7 +137,17 @@ public class DashboardFragment extends Fragment {
                 (hour < 18) ? "Good Afternoon" :
                         "Good Evening";
 
-        greetingText.setText(message + ", Mehul 👋");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String name = "User";
+        if (user != null) {
+            if (user.getDisplayName() != null && !user.getDisplayName().isEmpty()) {
+                name = user.getDisplayName();
+            } else if (user.getEmail() != null) {
+                name = user.getEmail().split("@")[0];
+            }
+        }
+
+        greetingText.setText(message + ", " + name + " 👋");
     }
 
     // ---------------- GOOGLE FIT ----------------
@@ -112,37 +174,39 @@ public class DashboardFragment extends Fragment {
 
             Log.d("DEBUG", "Fit steps: " + steps);
 
-            getActivity().runOnUiThread(() -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
 
-                if (steps > 0) {
-                    // ✅ Use ONLY Google Fit
-                    isUsingFit = true;
+                    if (steps >= 0) {
+                        // ✅ Use ONLY Google Fit
+                        isUsingFit = true;
 
-                    if (sensorManager != null) {
-                        sensorManager.stop(); // stop sensor if running
+                        if (sensorManager != null) {
+                            sensorManager.stop(); // stop sensor if running
+                        }
+
+                        stepsText.setText(String.valueOf(steps));
+
+                    } else {
+                        Log.d("DEBUG", "Fit failed → using sensor");
+
+                        isUsingFit = false;
+
+                        if (sensorManager == null) {
+                            sensorManager = new StepSensorManager(getContext(), sensorSteps -> {
+                                if (isUsingFit) return; // 🚫 prevent override
+                                if (isAdded() && getActivity() != null) {
+                                    getActivity().runOnUiThread(() -> {
+                                        stepsText.setText(String.valueOf(sensorSteps));
+                                    });
+                                }
+                            });
+                            sensorManager.start();
+                        }
                     }
 
-                    stepsText.setText(String.valueOf(steps));
-
-                } else {
-                    Log.d("DEBUG", "Fit failed → using sensor");
-
-                    isUsingFit = false;
-
-                    sensorManager = new StepSensorManager(getContext(), sensorSteps -> {
-
-                        if (isUsingFit) return; // 🚫 prevent override
-
-                        getActivity().runOnUiThread(() -> {
-                            stepsText.setText(String.valueOf(sensorSteps));
-                        });
-
-                    });
-
-                    sensorManager.start();
-                }
-
-            });
+                });
+            }
         });
 
         googleFitManager.readHeartRate(getActivity(), hr -> {
@@ -154,7 +218,17 @@ public class DashboardFragment extends Fragment {
                     if (hr > 0) {
                         heartText.setText(hr + " bpm");
                     } else {
-                        heartText.setText("No HR data");
+                        heartText.setText("--");
+                    }
+                });
+            }
+        });
+
+        googleFitManager.readSleep(getActivity(), hours -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (sleepText.getText().toString().equals("--")) {
+                        sleepText.setText(String.format(Locale.getDefault(), "%.1fh", hours));
                     }
                 });
             }
@@ -174,8 +248,21 @@ public class DashboardFragment extends Fragment {
 
         new Thread(() -> {
 
+            try {
+                Thread.sleep(1000); // give system time to update stats
+            } catch (Exception e) {}
+
+            Context appContext = requireContext().getApplicationContext();
+
             Map<String, Long> usageMap =
-                    UsageEventHelper.getAccurateUsage(getContext());
+                    UsageEventHelper.getAccurateUsage(appContext);
+
+            long totalTime = 0;
+            for (long time : usageMap.values()) {
+                totalTime += time;
+            }
+
+            final long fTotalTime = totalTime;
 
             List<Map.Entry<String, Long>> sorted =
                     new ArrayList<>(usageMap.entrySet());
@@ -192,27 +279,41 @@ public class DashboardFragment extends Fragment {
             double score =
                     ProductivityCalculator.calculateScore(sortedMap);
 
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded()) return;
+                requireActivity().runOnUiThread(() -> {
 
-                scoreValue.setText(String.valueOf((int) score));
+                    scoreValue.setText(String.valueOf((int) score));
 
-                scoreStatus.setText(score > 75 ? "Excellent 🚀" :
-                        score > 50 ? "Good 👍" :
-                                "Needs Improvement ⚠️");
+                    scoreStatus.setText(score > 75 ? "Excellent 🚀" :
+                            score > 50 ? "Good 👍" :
+                                    "Needs Improvement ⚠️");
 
-                aiInsight.setText(generateInsight(score));
+                    aiInsight.setText(generateInsight(score));
 
-                setupChart(sortedMap);
-                populateTopApps(sortedMap);
-            });
+                    long totalMinutes = fTotalTime / (1000 * 60);
+                    long hours = totalMinutes / 60;
+                    long minutes = totalMinutes % 60;
+
+                    if (hours > 0) {
+                        usageText.setText(String.format(Locale.getDefault(), "%dh %dm", hours, minutes));
+                    } else {
+                        usageText.setText(String.format(Locale.getDefault(), "%dm", minutes));
+                    }
+
+                    setupChart(sortedMap);
+                    populateTopApps(sortedMap);
+                });
+
 
         }).start();
     }
 
     private boolean hasUsageStatsPermission() {
 
+        Context context = requireContext().getApplicationContext();
+
         AppOpsManager appOps =
-                (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
+                (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
 
         int mode;
 
@@ -309,7 +410,9 @@ public class DashboardFragment extends Fragment {
 
             float minutes = entry.getValue() / (1000f * 60f);
 
-            TextView tv = new TextView(getContext());
+            Context context = requireContext(); // safe at this point
+
+            TextView tv = new TextView(context);
 
             String appName = entry.getKey();
 
